@@ -11,7 +11,7 @@ const webpack = require('webpack')
 const uglify = require('uglify-js')
 const btoa = require('btoa')
 
-const NAME = 'jsoneditor'
+const NAME = 'jsoneditor-sg7'
 const NAME_MINIMALIST = 'jsoneditor-minimalist'
 const ENTRY = './src/js/JSONEditor.js'
 const HEADER = './src/js/header.js'

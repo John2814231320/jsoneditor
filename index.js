@@ -1,1 +1,1 @@
-module.exports = require('./dist/jsoneditor')
+module.exports = require('./dist/jsoneditor-sg7')
