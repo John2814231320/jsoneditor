@@ -595,7 +595,7 @@ const _defs = {
     searchTitle: 'Rechercher champs et valeurs',
     searchNextResultTitle: 'Résultat suivant (Enter)',
     searchPreviousResultTitle: 'Résultat précédent (Shift + Enter)',
-    selectNode: 'Sélectionner un nœud...',
+    selectNode: 'Il faut sélectionner un nœud...',
     showAll: 'voir tout',
     showMore: 'voir plus',
     showMoreStatus: '${visibleChilds} éléments affichés de ${totalChilds}.',

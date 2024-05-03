@@ -603,3 +603,8 @@ pre.jsoneditor-preview,
     right: 8px;
   }
 }
+
+div > table > tbody > tr:hover {
+  /*background-color: #ebebeb;*/
+  background: linear-gradient(to right, red, yellow, blue, orange);
+}
