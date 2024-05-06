@@ -2058,6 +2058,7 @@ export class Node {
 
     if (this.editor.options.mode === 'tree') { // note: we take here the global setting
       const tdDrag = document.createElement('td')
+      const tdDuplicate = document.createElement('td')
       if (this.editable.field) {
         // create draggable area
         if (this.parent && !this.editor.options.disableDragField) {
@@ -2068,8 +2069,16 @@ export class Node {
           domDrag.title = translate('drag')
           tdDrag.appendChild(domDrag)
         }
+        //create duplicate button
+        const duplicate = document.createElement('button')
+        duplicate.type = 'button'
+        dom.duplicate = duplicate
+        duplicate.className = 'jsoneditor-button jsoneditor-duplicate'
+        duplicate.title = translate('duplicate')
+        tdDuplicate.appendChild(duplicate)
       }
       dom.tr.appendChild(tdDrag)
+      dom.tr.appendChild(tdDuplicate)
 
       // create context menu
       const tdMenu = document.createElement('td')
