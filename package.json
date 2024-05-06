@@ -1,6 +1,6 @@
 {
   "name": "jsoneditor-sg7",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "main": "./dist/jsoneditor.min.js",
   "description": "A web-based tool to view, edit, format, and validate JSON",
   "tags": [
