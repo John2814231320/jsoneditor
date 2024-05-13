@@ -161,6 +161,11 @@ div {
         background-position: -72px -72px;
         cursor: move;
       }
+      &.jsoneditor-duplicate {
+        background-image: $jse-icons-url;
+        background-position: -48px -72px;
+        cursor: pointer;
+      }
     }
     *:focus {
       outline: none;
@@ -351,10 +356,12 @@ tr.jsoneditor-selected {
   background-color: $jse-empty;
 }
 tr.jsoneditor-selected button.jsoneditor-dragarea,
+tr.jsoneditor-selected button.jsoneditor-duplicate,
 tr.jsoneditor-selected button.jsoneditor-contextmenu-button {
   visibility: hidden;
 }
 tr.jsoneditor-selected.jsoneditor-first button.jsoneditor-dragarea,
+tr.jsoneditor-selected.jsoneditor-first button.jsoneditor-duplicate,
 tr.jsoneditor-selected.jsoneditor-first button.jsoneditor-contextmenu-button {
   visibility: visible;
 }
