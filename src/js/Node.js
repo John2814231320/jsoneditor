@@ -2046,126 +2046,128 @@ export class Node {
    */
   getDom () {
     const dom = this.dom;
-    if (dom.tr) {
+      if (dom.tr) {
+        return dom.tr;
+      }
+      this._updateEditability();
+    
+      // create row
+      dom.tr = document.createElement('tr');
+      dom.tr.node = this;
+      console.log('this.editor.options.mode : ' + this.editor.options.mode);
+      if (this.editor.options.mode === 'tree') {
+        console.log('test du tree');
+        // note: we take here the global setting
+        var AllButtons = document.createElement('td');
+        AllButtons.style.display = 'flex';
+        AllButtons.style.justifyContent = 'flex-end'; // aligner les boutons à droite
+        if (this.editable.field) {
+          var domDuplicate = document.createElement('button');
+          domDuplicate.type = 'button';
+          dom.duplicate = domDuplicate;
+          domDuplicate.className = 'jsoneditor-button jsoneditor-duplicate';
+          domDuplicate.title = ('duplicate');
+          AllButtons.appendChild(domDuplicate);
+
+          // create an information button
+          var info = document.createElement('button');
+          info.type = 'button';
+          dom.info = info;
+          info.className = 'jsoneditor-button jsoneditor-info';
+        }
+
+        // create context menu (can be useful later)
+        //var tdMenu = document.createElement('td');
+        //var menu = document.createElement('button');
+        //menu.type = 'button';
+        //dom.menu = menu;
+        //menu.className = 'jsoneditor-button jsoneditor-contextmenu-button';
+        //menu.title = (0, i18n /* translate */.Tl)('actionsMenu');
+        //tdMenu.appendChild(dom.menu);
+
+        //Example of a little schema.json
+
+        var schema = {
+          "$defs": {
+            "Fronthaul": {
+              "additionalProperties": false,
+              "description": "Fronthaul configuration",
+              "properties": {
+                  "ports": {
+                      "items": {
+                          "$ref": "#/$defs/Port"
+                      },
+                      "title": "Ports",
+                      "type": "array"
+                  }
+              },
+              "required": [
+                  "ports"
+              ],
+              "title": "Fronthaul",
+              "type": "object"
+            },
+            "Bandwidth": {
+              "description": "test de la description bandwith"
+            }
+          }
+        };
+
+        var description;
+        var fieldSchema;
+        if (this.field) {
+          fieldSchema = Object.keys(schema.$defs).find(key => key.toLowerCase() === this.field.toLowerCase());
+        }
+        if (fieldSchema) {
+          description = schema.$defs[fieldSchema].description;
+        } else {
+          description = 'Pas de descriptions valides';
+        }
+
+        info.title = description;
+        AllButtons.appendChild(dom.info);
+    
+        domDuplicate.addEventListener('click', function () {
+          var tr = this.parentNode.parentNode;
+          var clickedNode = tr.node;
+    
+          editor.expandAll();
+    
+          Array.from(document.querySelectorAll('.jsoneditor-duplicate')).forEach(function (button) {
+            var tr = button.parentNode.parentNode;
+            var node = tr.node;
+    
+            if (node.field === clickedNode.field && node.value !== clickedNode.value) {
+              console.log('le noeud ' + node.field + ' : ' + node.value + ' a été remplacé par ' + clickedNode.field + ' : ' + clickedNode.value);
+              node.update(clickedNode.value);
+            }
+          });
+          editor.onChange();
+          // update the user interface
+          var updatedJson = editor.get();
+    
+          // update the json
+          editor.set(updatedJson);
+    
+          editor.collapseAll();
+          
+        });
+      }
+      //dom.tr.appendChild(tdMenu);
+
+      // create tree and field
+      var tdField = document.createElement('td');
+      dom.tr.appendChild(tdField);
+      if (this.editor.options.mode === 'tree') {
+        dom.tr.appendChild(AllButtons);
+      }
+      dom.tree = this._createDomTree();
+      tdField.appendChild(dom.tree);
+      this.updateDom({
+        updateIndexes: true
+      });
       return dom.tr;
     }
-    this._updateEditability();
-  
-    // create row
-    dom.tr = document.createElement('tr');
-    dom.tr.node = this;
-    if (this.editor.options.mode === 'tree') {
-      // note: we take here the global setting
-      var AllButtons = document.createElement('td');
-      if (this.editable.field) {
-        var domDuplicate = document.createElement('button');
-        domDuplicate.type = 'button';
-        dom.duplicate = domDuplicate;
-        domDuplicate.className = 'jsoneditor-button jsoneditor-duplicate';
-        domDuplicate.style.float = 'right';
-        domDuplicate.title = (0, i18n /* translate */.Tl)('duplicate');
-        AllButtons.appendChild(domDuplicate);
-
-        // create an information button
-        var info = document.createElement('button');
-        info.type = 'button';
-        dom.info = info;
-        info.className = 'jsoneditor-button jsoneditor-info';
-        info.style.float = 'right';
-      }
-
-      // create context menu (can be useful later)
-      //var tdMenu = document.createElement('td');
-      //var menu = document.createElement('button');
-      //menu.type = 'button';
-      //dom.menu = menu;
-      //menu.className = 'jsoneditor-button jsoneditor-contextmenu-button';
-      //menu.title = (0, i18n /* translate */.Tl)('actionsMenu');
-      //tdMenu.appendChild(dom.menu);
-
-      //Example of a little schema.json
-
-      var schema = {
-        "$defs": {
-          "Fronthaul": {
-            "additionalProperties": false,
-            "description": "Fronthaul configuration",
-            "properties": {
-                "ports": {
-                    "items": {
-                        "$ref": "#/$defs/Port"
-                    },
-                    "title": "Ports",
-                    "type": "array"
-                }
-            },
-            "required": [
-                "ports"
-            ],
-            "title": "Fronthaul",
-            "type": "object"
-          },
-          "Bandwidth": {
-            "description": "test de la description bandwith"
-          }
-        }
-      };
-
-      var description;
-      var fieldSchema;
-      if (this.field) {
-        fieldSchema = Object.keys(schema.$defs).find(key => key.toLowerCase() === this.field.toLowerCase());
-      }
-      if (fieldSchema) {
-        description = schema.$defs[fieldSchema].description;
-      } else {
-        description = 'Pas de descriptions valides';
-      }
-
-      info.title = description;
-      AllButtons.appendChild(dom.info);
-  
-      domDuplicate.addEventListener('click', function () {
-        var tr = this.parentNode.parentNode;
-        var clickedNode = tr.node;
-  
-        editor.expandAll();
-  
-        Array.from(document.querySelectorAll('.jsoneditor-duplicate')).forEach(function (button) {
-          var tr = button.parentNode.parentNode;
-          var node = tr.node;
-  
-          if (node.field === clickedNode.field && node.value !== clickedNode.value) {
-            console.log('le noeud ' + node.field + ' : ' + node.value + ' a été remplacé par ' + clickedNode.field + ' : ' + clickedNode.value);
-            node.update(clickedNode.value);
-          }
-        });
-        editor.onChange();
-        // update the user interface
-        var updatedJson = editor.get();
-  
-        // update the json
-        editor.set(updatedJson);
-  
-        editor.collapseAll();
-        
-      });
-    }
-    //dom.tr.appendChild(tdMenu);
-
-    // create tree and field
-    var tdField = document.createElement('td');
-    dom.tr.appendChild(tdField);
-    if (this.editor.options.mode === 'tree') {
-      dom.tr.appendChild(AllButtons);
-    }
-    dom.tree = this._createDomTree();
-    tdField.appendChild(dom.tree);
-    this.updateDom({
-      updateIndexes: true
-    });
-    return dom.tr;
-  }
 
   /**
    * Test whether a Node is rendered and visible
@@ -2312,6 +2314,16 @@ export class Node {
         domField.contentEditable = this.editable.field
         domField.spellcheck = false
         domField.className = 'jsoneditor-field'
+
+        this.dom.tr.addEventListener('click', function() {
+
+          var trs = document.querySelectorAll('tr');
+          trs.forEach(function(otherTr) {
+            otherTr.classList.remove('clicked');
+          });
+
+          this.classList.add('clicked');
+        });
       } else {
         // parent is an array this is the root node
         domField.contentEditable = false

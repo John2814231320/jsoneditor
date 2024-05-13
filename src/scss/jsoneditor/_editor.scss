@@ -606,5 +606,49 @@ pre.jsoneditor-preview,
 
 div > table > tbody > tr:hover {
   /*background-color: #ebebeb;*/
-  background: linear-gradient(to right, red, yellow, blue, orange);
+  /*background: linear-gradient(to right, red, orange, yellow, green, blue, purple);*/
+  background-color: #d3d3d3;
 }
+
+/*tr.clicked {
+  border: 2px solid darkgray;
+}*/
+
+tr:active {
+  border: 2px solid darkgray;
+}
+
+div > table > tbody > tr > td > button {
+  visibility: hidden;
+}
+
+div > table > tbody > tr:hover > td > button {
+  visibility: visible;
+}
+
+/*div > table > tbody > tr > td {
+  width: 20px;
+}*/
+
+div.jsoneditor-tree button.jsoneditor-duplicate {
+  background-image: url("./img/jsoneditor-icons.svg");
+  background-position: -52px 1px;
+}
+
+div.jsoneditor-tree button.jsoneditor-info {
+  background-image: url("./img/jsoneditor-icons.svg");
+  background-position: -25px -23px;
+}
+
+/*.jsoneditor-menu > button:hover,
+.jsoneditor-menu > .jsoneditor-modes > button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.jsoneditor-menu > button:focus,
+.jsoneditor-menu > button:active,
+.jsoneditor-menu > .jsoneditor-modes > button:focus,
+.jsoneditor-menu > .jsoneditor-modes > button:active {
+  background-color: rgba(255, 255, 255, 0.3);
+}*/

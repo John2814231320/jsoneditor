@@ -46,7 +46,7 @@ export function appendNodeFactory (Node) {
 
     // TODO: consistent naming
 
-    if (this.editor.options.mode === 'tree') {
+    /*if (this.editor.options.mode === 'tree') {
       // a cell for the dragarea column
       dom.tdDrag = document.createElement('td')
 
@@ -59,7 +59,7 @@ export function appendNodeFactory (Node) {
       menu.title = 'Click to open the actions menu (Ctrl+M)'
       dom.menu = menu
       tdMenu.appendChild(dom.menu)
-    }
+    }*/
 
     // a cell for the contents (showing text 'empty')
     const tdAppend = document.createElement('td')
